@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="keywords" content="Bind Query Library,BQL,SQL,JQL,js数据绑定,js数据查询,json sql语句">  
+    <meta name="description" content="BQL--Bind Query Library">  
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=8">
+    <title>BQL--Bind Query Library</title>
+    <link rel="icon" href="assets/images/icon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="assets/css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/css/codeEditor.css"/>
+  </head>
+  <body>
+    <!--header-->
+    <div id="header">
+      <div id="title">bql.js</div>
+      <div id="smallTitle">Bind Query Library</div>
+      <div id="viewProject" class="border-btn" onclick="J.open('https://github.com/theajack/bql')">View project on github</div>
+      
+    </div>
+    <!--intro-->
+    <div id="introPart" class="bg-gray text-black part clearfix">
+      <div class="part-title">功能</div>
+      
+      <div class="part-title small"></div>
+      <div class="func-item">
+        <div class="func-img">JQL</div>
+        <div class="func-text">类SQL方式操作JSON</div>
+      </div>
+      <div class="func-item">
+        <div class="func-img">BQL</div>
+        <div class="func-text">基于JQL进行数据绑定</div>
+      </div>
+      
+    </div>
+		
+    
+    <!--download-->
+    <div id="downloadPart" class="bg-dark text-white part">
+      <div class="part-title hassmall">下载</div>
+      <div class="part-title small">引用： &lt;script src="https://www.theajack.com/bql/assets/js/bql.min.js"&gt;&lt;/script&gt;</div>
+      <div id="copyBtn" class="border-btn" onclick="J.open('assets/js/bql.min.js')">或点击复制源码</div>
+    </div>
+    <!--api-->
+    <div id="apiPart" class="bg-gray part">
+      <div class="part-title text-black relative">API文档
+        <div id="apiSearchWrapper">
+          <input type="text" id="apiSearchInput" placeholder="Search"/>
+          <span id="apiSearchBtn" class="glyphicon glyphicon-search"></span>
+          
+          <div id="apiSearchResultWrapper" class="display-none">
+            <span class="result-close-btn glyphicon glyphicon-eject j-animation"></br>
+              <span><span id="resultNum" class="search-key"></span>results</span>
+            </span>
+            <div id="apiSearchResultList">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="relative">
+        <div id="apiDetailWrapper">
+          <div id="apiDetail" jet-form="apiDetail">
+            <div id="apiDetailSwitchWrapper">
+              <span class="glyphicon glyphicon-chevron-left prev"></span>
+              <span class="glyphicon glyphicon-chevron-right next"></span>
+              <span class="glyphicon glyphicon-remove close-btn"></span>
+            </div>
+            <!--<span class="close-btn glyphicon glyphicon-remove"></span>-->
+            <div id="apiDetailTitleWrapper">
+              <div id="apiTitleLeft">
+                
+                <div class="part-title hassmall" api-part="title">Title</div>
+                <div class="part-title smaller" api-part="intro">intro</div>
+              </div>
+              <div id="apiTitleRight">
+                <div class="mb-m">
+                  <span class="api-detail-title"><span class="glyphicon glyphicon-th-large"></span>功能:</span>
+                  <span class="api-detail-content" api-part="function" jet-set="html">function</span>
+                </div>
+                <div class="">
+                  <span class="api-detail-title"><span class="glyphicon glyphicon-file"></span>如何使用:</span>
+                  <span class="api-detail-content" api-part="howUse">how to use</span>
+                </div>
+              </div>
+            </div>
+            <div class="api-detail-item small relative border">
+              <div id="apiBtnWrapper">
+                <div id="apiCodeBtn" class="border-btn dark"><span class="glyphicon glyphicon-saved"></span>Submit</div>
+                <div id="apiCodeCopyBtn" class="border-btn dark d-hide"><span class="glyphicon glyphicon-floppy-disk "></span>Copy</div>
+                <div id="apiCodeResetBtn" class="border-btn dark"><span class="glyphicon glyphicon-repeat only"></span></div>
+                <div id="apiCodeClearBtn" class="border-btn dark"><span class="glyphicon glyphicon-remove only"></span></div>
+                <div id="apiClearColor" class="border-btn dark"><span class="glyphicon glyphicon-list-alt only"></span></div>
+                <div id="apiFixColor" class="border-btn dark d-show"><span class="glyphicon glyphicon-wrench only"></span></div>
+                <div id="apiHideAllCodeBtn" class="border-btn dark d-hide"><span class="glyphicon hide-all glyphicon-chevron-up only"></span></div>
+                <div id="apiShowAllCodeBtn" class="border-btn dark d-hide"><span class="glyphicon show-all glyphicon-chevron-down only"></span></div>
+              </div>
+              <span class="api-detail-title display-block"><span class="glyphicon glyphicon-pencil"></span>Code:</span>
+              <div id="showCode">
+                <pre id="apiCodeView"></pre>
+                <textarea id="apiCode" jet-api-index="" spellcheck="false" jet-change="0" api-part="code"></textarea>
+              </div>
+            </div>
+            <div class="api-detail-item large result">
+              <span class="api-detail-title display-block"><span class="glyphicon glyphicon-globe"></span>Result:</span>
+              <div id="resultArea"></div>
+              <div class="result-cover hide">This case cannot be executed,just use it in your project.</div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="apiBarTitle">
+        <div class="api-title bg-dark">Attribute</div>
+        <div class="api-title bg-lgray">BQL</div>
+        <div class="api-title bg-dark">JQL</div>
+      </div>
+      <div id="apiWindow">
+        <div id="apiTrangleBar">
+          <div class="trangle api dark"></div>
+        </div>
+        <div id="apiBar">
+            <div class="api-item bg-lgray" jet-api="Attribute">
+            </div>
+            <div class="api-item bg-dark" jet-api="BQL">
+            </div>
+            <div class="api-item bg-lgray" jet-api="JQL">
+            </div>
+        </div>
+      </div>
+    </div>
+      <!--<div b-bind="str" b-update=true b-init="'test'">
+        <div>sting:<input type="text" value="{{str}}"/></div>
+      </div>
+      </br>
+    
+      <div b-bind="user" b-update=true b-init="{nickname:'n1',pw:1234}">
+        <div>昵称：<input type="text" value="{{user.nickname}}"/></div>
+        <div>密码：<input type="text" value="{{user.pw}}"/></div>
+      </div>
+      </br>-->
+      <!--<div b-loop="users" b-update=true b-refresh=true b-callback="Ced.init()" b-init="test()">
+        <div>昵称：<input type="text" value="{{each.nickname}}"/></div>
+        <editor height="auto" width="auto">function aa(){
+	var a={{each.nickname}};
+	return aa;
+}</editor>
+        <div>昵称：<textarea>{{each.nickname}}</textarea></div>
+        <div>昵称：{{each.nickname}}</div>
+        <div>密码：{{each.pw}}</div>
+        <div>年龄：<input type="number" value="{{each.age}}"/></div>
+        <div>生日：<input type="date" value="{{each.birth}}"/></div>
+      </div>-->
+    
+    
+    
+    <!--relate-->
+    <div id="relatePart" class="bg-dark text-white part " >
+      <div class="part-title hassmall">友情链接</div>
+      <div class="part-title small">(欢迎访问)</div>
+      <div id="tjLinks">
+      </div>
+    </div>
+    <!--footer-->
+    <div id="footer" class="bg-black text-white part">
+      <div id="footerLink">
+        <span class="link" onclick="J.open('https://github.com/theajack')">GitHub</span>
+        <span class="split-icon">|</span>
+        <span class="link" onclick="J.open('http://weibo.com/p/1005055304330572/home?from=page_100505&mod=TAB&is_all=1')">Sina Micro-blog</span>
+        <span class="split-icon">|</span>
+        
+        <span class="wechat-public d-hide" onclick="this.child(0).fadeToggle()">
+          WeChat Official Accounts
+          <img class="wechat-img" src="assets/images/wechat_qrcode.jpg"/>
+        </span>
+        <span class="split-icon d-hide">|</span>
+        
+        Email:theajack@qq.com
+        <div class=" d-show">
+          <span class="wechat-public" onclick="this.child(0).fadeToggle()">
+            WeChat Official Accounts
+            <img class="wechat-img" src="assets/images/wechat_qrcode.jpg"/>
+          </span>
+        </div>
+      </div>
+      <div id="copyright">
+        <span class="glyphicon glyphicon-copyright-mark"></span> 2017 TheaJack All rights reserved
+      </div>
+    </div>
+    <script type="text/javascript" src="assets/js/jetter.min.js"></script>
+    <!--<script type="text/javascript" src="https://www.theajack.com/jetterjs/assets/js/jetter.min.js"></script>-->
+    <script type="text/javascript" src="https://www.theajack.com/assets/js/log.js"></script>
+    <!--<script type="text/javascript" src="assets/js/bql.min.js"></script>-->
+    <script type="text/javascript" src="assets/js/bql.js"></script>
+    <script type="text/javascript" src="assets/js/apiData.min.js"></script>
+    <script type="text/javascript" src="assets/js/apiCode.js"></script>
+    <script type="text/javascript" src="assets/js/index.js"></script>
+    <script type="text/javascript" src="https://www.theajack.com/assets/js/logo.js"></script>
+    <script type="text/javascript" src="https://www.theajack.com/assets/js/link.js"></script>
+    <script type="text/javascript" name="bql.js" src="https://www.theajack.com/assets/js/stat.js"></script>
+  </body>
+</html>
