@@ -2,20 +2,16 @@
     "name": "selon",
     "version": "0.0.1",
     "description": "Select from Json: Json Query Language",
-    "main": "dist/demo-main.esm.js",
-    "typings": "dist/demo-main.d.ts",
+    "main": "src/index.ts",
+    "typings": "src/index.ts",
     "repository": "git@github.com:theajack/selon.git",
     "author": "tackchen <theajack@qq.com>",
     "scripts": {
-        "build": "node ../../scripts/build/build.js main"
+        "build": "node ../../scripts/build/build.js selon"
     },
-    "license": "MIT",
-    "type": "module",
-    "dependencies": {
-    },
-    "publishConfig": {
-        "registry": "https://registry.npmjs.org/"
-    },
+    "license": "",
+    "dependencies": {},
     "unpkg": "dist/demo-main.min.js",
-    "jsdelivr": "dist/demo-main.min.js"
+    "jsdelivr": "dist/demo-main.min.js",
+    "module": "dist/selon.esm.js"
 }

@@ -1,8 +1,7 @@
 {
   "name": "selon",
   "version": "0.0.1",
-  "description": "lerna demo",
-  "main": "index.js",
+  "description": "Select from Json: Json Query Language",
   "repository": "git@github.com:theajack/selon.git",
   "author": "tackchen <theajack@qq.com>",
   "scripts": {

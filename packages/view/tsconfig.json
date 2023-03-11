@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "declaration": false,
         "baseUrl": ".",
         "outDir": "dist",
         "sourceMap": false,
@@ -20,8 +21,7 @@
             "esnext",
             "dom"
         ],
-        "types": [
-        ],
+        "types": [],
         "rootDir": "../..",
         "noEmit": false,
         "paths": {}

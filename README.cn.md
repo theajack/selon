@@ -5,7 +5,6 @@
 -->
 # [Selon](https://www.github.com/theajack/disable-devtool)
 
-
 <p>
     <a href="https://www.github.com/theajack/disable-devtool/stargazers" target="_black">
         <img src="https://img.shields.io/github/stars/theajack/disable-devtool?logo=github" alt="stars" />

@@ -1,31 +1,31 @@
 /* <style>
-  [b-bind]{
+  [s-bind]{
     display:none;
   }
-  [b-loop]{
+  [s-loop]{
     display:none;
   }
 </style>*/
 
-// 添加了 在b-loop$index
+// 添加了 在s-loop$index
 // ${}$
-// b-bind="name;data"
+// s-bind="name;data"
 
 /* $each $eachIndex $ei  d{js表达式}d f{return的js语句}f
 $(variable){
 }$*/
 
-// 一般元素的b-callback
+// 一般元素的s-callback
 import J from 'jetterjs';
-import { selon } from '../../packages/selon/src/selon';
+import { selon } from 'selon';
 
 function wrapInputVal (input) {
     const v = input.val();
     return (input.attr('type') === 'number') ? v : `"${v}"`;
 }
 
-
-export const SelonView = function (obj, loop) {
+export function SelonView (obj, loop) {
+    if (typeof loop === 'undefined') loop = obj.hasAttr('s-loop');
     let _varName = obj.attr(_bind);// loop 的话 是each
     let _obj = null;
     let _str = _bqlInitHtml(obj, loop);
@@ -190,6 +190,7 @@ export const SelonView = function (obj, loop) {
     };
     _bqlInit.call(this, get, set);
 };
+// @ts-ignore
 SelonView.init = function (element, data) {
     if (element == undefined) {
         const list = J.attr(_bind);
@@ -213,7 +214,7 @@ SelonView.init = function (element, data) {
             attr = element.attr(_loop);
             bool = ',true';
         } else {
-            throw new Error('对象没有b-bind或b-loop属性，不可初始化');
+            throw new Error('对象没有s-bind或s-loop属性，不可初始化');
         }
         (new Function('obj', 'window.' + attr + '=new SelonView(obj' + bool + ')'))(element);
         if (!element.hasAttr(_init)) {
@@ -228,13 +229,13 @@ SelonView.init = function (element, data) {
 J.ready(function () {
     SelonView.init();
 });
-const _bind = 'b-bind', // 单值
-    _loop = 'b-loop', // 数组
-    _update = 'b-update', // input值改变 是否更新数据 默认为false oninput 更新数据
-    _refresh = 'b-refresh', // onchange 刷新页面
-    _callback = 'b-callback', // onchange 刷新页面 的回调函数
-    _init = 'b-init', // 初始值 默认为null
-    _each = 'b-each', // 下文中引用的变量名 默认为each
+const _bind = 's-bind', // 单值
+    _loop = 's-loop', // 数组
+    _update = 's-update', // input值改变 是否更新数据 默认为false oninput 更新数据
+    _refresh = 's-refresh', // onchange 刷新页面
+    _callback = 's-callback', // onchange 刷新页面 的回调函数
+    _init = 's-init', // 初始值 默认为null
+    _each = 's-each', // 下文中引用的变量名 默认为each
     _each_def = 'each',
     _s = '{{',
     _e = '}}',
@@ -243,8 +244,8 @@ const _bind = 'b-bind', // 单值
     //   _fun_reg = new RegExp('(\\$(.*?){)((.|\\n)*?)(}\\$)', 'g'),
     _all_reg = new RegExp('(' + _s + ')((.|\\n)*?)(' + _e + ')|(\\$(.*?){)((.|\\n)*?)(}\\$)', 'g'),
     _undefined = '无',
-    _index = 'b-index', // 哪一个数据
-    _attr = 'b-attr';// 那一个属性
+    _index = 's-index', // 哪一个数据
+    _attr = 's-attr';// 那一个属性
 function _funsResult (get, data, i) {
     const result = [];
     get.funs().each(function (item) {
@@ -439,3 +440,5 @@ function _bqlCheckBindInit (obj, loop) {
         obj.attr(_init, name.split(';')[1]);
     }
 }
+
+window.SelonView = SelonView;

@@ -1,4 +1,4 @@
-import J from 'jetterjs';
+import { avg, clone, sortByAttr, sum } from './utils';
 
 function _checkString (arg) {
     if (arg instanceof Array) return arg;
@@ -40,7 +40,8 @@ function _jqlSetAttrAndValue (data, set) {
     }
     set.attr(attra);
     set.value(valuea);
-} function _jqlSelect (get, set, arg, run) {
+}
+function _jqlSelect (get, set, arg, run) {
     if (arg == undefined || arg.constructor == Boolean) {
         if (run === true || arg === true) {
             return _jqlCheckReturn(get.data(), get);
@@ -165,7 +166,7 @@ function _jqlCheckWhere (index, get, realI) {
         } else {// bool表达式
             let code = '';
             for (const key in data) {
-                if (attr.has(key)) {
+                if (attr.includes(key)) {
                     let v = data[key];
                     v = typeof v === 'string' ? `"${v}"` : v;
                     code += `var ${key}=${v};`;
@@ -189,8 +190,7 @@ function _jqlGroupBy (get, set, attr, run) {
         return _jqlCheckRun.call(this, run);
     }
 };
-function _throw (str) {
-    str = J.checkArg(str, '未知异常');
+function _throw (str = '未知异常') {
     throw new Error(str);
 }
 function _jqlOrderBy (get, set, attr, order, orderType, run) {
@@ -223,7 +223,7 @@ function _getRunGroupBySelect (obj, sel, as) {
         }
         const d = {};
         if (as != TYPE.all && as.length > 0) {
-            as.each(function (a) {
+            as.forEach(function (a) {
                 d[a] = obj[a];
             });
         }
@@ -233,7 +233,7 @@ function _getRunGroupBySelect (obj, sel, as) {
 }
 function _checkSelectAttr (attr) {
     for (let i = 0; i < attr.length; i++) {
-        if (attr[i].has('(')) {
+        if (attr[i].includes('(')) {
             return false;
         }
     }
@@ -241,17 +241,17 @@ function _checkSelectAttr (attr) {
 }
 function _jqlCheckReturn (res, get) {
     if (get.single()) {
-        return J.clone(res[0]);
+        return clone(res[0]);
     }
-    return J.clone(res);
+    return clone(res);
 }
 function _checkRunOrderBy (get, res) {
     const attr = get.orderAttr();
     if (attr != '') {
         if (get.order() == 'desc') {
-            res.sortByAttr(attr, get.orderType(), false);
+            sortByAttr.call(res, attr, get.orderType(), false);
         } else {
-            res.sortByAttr(attr, get.orderType());
+            sortByAttr.call(res, attr, get.orderType());
         }
     }
     return res;
@@ -266,9 +266,9 @@ function _checkRunGroupBy (get, data) {
     const vs = [];
     const norSel = _checkSelectAttr(as);
     if (attr != '') {
-        data.each(function (item) {
+        data.forEach(function (item) {
             if (item.hasOwnProperty(attr)) {
-                const index = vs.index(item[attr]);
+                const index = vs.indexOf(item[attr]);
                 if (index == -1) {
                     vs.push(item[attr]);
                     gres.push([ _getRunGroupBySelect(item, norSel, as) ]);
@@ -283,10 +283,10 @@ function _checkRunGroupBy (get, data) {
             const funs = get.groupFuns();
             if (funs.length > 0) {
                 const funRes = [];
-                gres.each(function (items) {
+                gres.forEach(function (items) {
                     const newobj = {};
                     const names = [];
-                    funs.each(function (fun) {
+                    funs.forEach(function (fun) {
                         if (fun.fun == undefined) {
                             if (fun.attr != attr) {
                                 _throw(fun.attr + ' 没有groupBy');
@@ -300,7 +300,7 @@ function _checkRunGroupBy (get, data) {
                                 }
                                 fun.name = FUN.count;
                             }
-                            if (!names.has(fun.name)) {
+                            if (!names.includes(fun.name)) {
                                 names.push(fun.name);
                             } else {
                                 _throw(fun.name + '列名不能相同');
@@ -325,14 +325,14 @@ function _checkRunGroupBy (get, data) {
 function _checkGroupFunc (fun, items) {
     switch (fun.fun) {
         case FUN.sum:{
-            return _getGroupAttrArr(items, fun.attr).sum();
+            return sum(_getGroupAttrArr(items, fun.attr));
         };
         case FUN.count:{
-            if (fun.attr.has(FUN.distinct + ' ')) {// count(distinct name)
+            if (fun.attr.includes(FUN.distinct + ' ')) {// count(distinct name)
                 const attr = fun.attr.split(' ')[1];
                 const arr = [];
-                items.each(function (item) {
-                    if (!arr.has(item[attr])) {
+                items.forEach(function (item) {
+                    if (!arr.includes(item[attr])) {
                         arr.push(item[attr]);
                     }
                 });
@@ -342,19 +342,19 @@ function _checkGroupFunc (fun, items) {
             }
         };
         case FUN.avg:{
-            return _getGroupAttrArr(items, fun.attr).avg();
+            return avg(_getGroupAttrArr(items, fun.attr));
         };
         case FUN.first:{
-            return items.first()[fun.attr];
+            return items[0][fun.attr];
         };
         case FUN.last:{
-            return items.last()[fun.attr];
+            return items[item.length - 1][fun.attr];
         };
         case FUN.max:{
-            return _getGroupAttrArr(items, fun.attr).max();
+            return Math.max.apply(null, _getGroupAttrArr(items, fun.attr));
         };
         case FUN.min:{
-            return _getGroupAttrArr(items, fun.attr).min();
+            return Math.min.apply(null, _getGroupAttrArr(items, fun.attr));
         };
         default:{
             return items[0][fun.attr];
@@ -363,17 +363,17 @@ function _checkGroupFunc (fun, items) {
 }
 function _getGroupAttrArr (arr, attr) {
     const res = [];
-    arr.each(function (item) {
+    arr.forEach(function (item) {
         res.push(item[attr]);
     });
     return res;
 }
 function _geneGroupFuns (attr) {
-    if (attr.timeOf(' ') > 2) {
+    if (attr.split(' ').length > 3) {
         _throw('参数错误：select 参数空格不能多于2个');
     } else {
         const res = {};
-        if (attr.has('(') && attr.has(')')) {
+        if (attr.includes('(') && attr.includes(')')) {
             let arr = attr.split(')');
             if (arr[1] != '') {
                 res.name = arr[1].substring(1);
@@ -381,7 +381,7 @@ function _geneGroupFuns (attr) {
             attr = arr[0];
             arr = attr.split('(');
             res.attr = arr[1].toLowerCase();
-            if (arr[1].has(' ')) {
+            if (arr[1].includes(' ')) {
                 arr[1] = arr[1].split(' ')[1];
             }
             if (!res.hasOwnProperty('name')) {
@@ -389,7 +389,7 @@ function _geneGroupFuns (attr) {
             }
             res.fun = arr[0].toLowerCase();
         } else {
-            if (attr.has(' ')) {
+            if (attr.includes(' ')) {
                 res.name = attr.split(' ')[1];
                 res.attr = attr.split(' ')[0];
             } else {
@@ -416,11 +416,11 @@ function _selectCount (get, attr, data) {
     } else {
         result = data;
     }
-    if (obj.attr.has(FUN.distinct)) {
+    if (obj.attr.includes(FUN.distinct)) {
         const at = obj.attr.split(' ')[1];
         const vs = [];
-        result.each(function (item) {
-            if (!vs.has(item[at])) {
+        result.forEach(function (item) {
+            if (!vs.includes(item[at])) {
                 vs.push(item[at]);
                 sum++;
             }
@@ -443,7 +443,7 @@ function _jqlFuncWithoutGroup (get) {
     if (fun.name == fun.attr || fun.name == '*') {// 默认别名是函数名
         fun.name = fun.fun;
     }
-    if (fun.attr.has(' ') && fun.attr.split(' ')[1] == fun.name) {// distinct
+    if (fun.attr.includes(' ') && fun.attr.split(' ')[1] == fun.name) {// distinct
         fun.name = fun.fun;
     }
     const newobj = {};
@@ -463,10 +463,10 @@ function _jqlRun (get, set) {
             //   const sum = 0;
             let nror = false;// needRemoveOrderAttr  为了完成orderBy的order属性不在select属性里
             if (get.groupAttr() == '') {// 没使用groupBy
-                if (attr.length == 1 && attr[0].has('(')) {// 有使用聚合函数
+                if (attr.length == 1 && attr[0].includes('(')) {// 有使用聚合函数
                     result = _jqlFuncWithoutGroup(get);
                 } else {
-                    if (get.orderAttr() != '' && !attr.has(get.orderAttr())) {
+                    if (get.orderAttr() != '' && !attr.includes(get.orderAttr())) {
                         attr.push(get.orderAttr());
                         nror = true;
                     }
@@ -474,19 +474,19 @@ function _jqlRun (get, set) {
                         if (_jqlCheckWhere(i, get)) {
                             let r = {};
                             if (attr == TYPE.all) {
-                                r = J.clone(data[i]);
+                                r = clone(data[i]);
                                 result.push(r);
                             } else {
-                                if (attr[0].has(FUN.count)) {// count 函数
+                                if (attr[0].includes(FUN.count)) {// count 函数
                                     result = _selectCount(get, attr, data);
                                     break;
                                 } else {
-                                    attr.each(function (a, j) {
+                                    attr.forEach(function (a, j) {
                                         let name = a;// 别名
-                                        if (a.has(FUN.count)) {
+                                        if (a.includes(FUN.count)) {
                                             _throw('使用count函数时select最多只能选择一列');
                                         }
-                                        if (a.has(' ')) {// 别名
+                                        if (a.includes(' ')) {// 别名
                                             const arr = a.split(' ');
                                             if (arr.length > 3) {
                                                 _throw('select参数格式错误');
@@ -516,7 +516,7 @@ function _jqlRun (get, set) {
                                             }
                                             r[name] = data[i][a];
                                         } else {
-                                            if (a.has('(')) {// 没有groupBy的聚合函数
+                                            if (a.includes('(')) {// 没有groupBy的聚合函数
                                                 _throw('select:没有与groupBy配合使用的聚合函数,一次只允许使用一个');
                                             } else {
                                                 _throw('select参数错误,对象不包含' + a + '属性');
@@ -525,8 +525,8 @@ function _jqlRun (get, set) {
                                     });
 
                                     if (dist) {
-                                        const str = J.toString(r);
-                                        if (!distArr.has(str)) {
+                                        const str = JSON.stringify(r);
+                                        if (!distArr.includes(str)) {
                                             distArr.push(str);
                                             result.push(r);
                                         }
@@ -546,15 +546,15 @@ function _jqlRun (get, set) {
                 if (get.cond() == true) {// 与where共用
                     for (let i = 0; i < data.length; i++) {
                         if (_jqlCheckWhere(i, get)) {
-                            result.push(J.clone(data[i]));
+                            result.push(clone(data[i]));
                         }
                     }
                 } else {
-                    result = J.clone(data);
+                    result = clone(data);
                 }
                 const funs = [];
-                attr.each(function (a) {
-                    if (a.has(FUN.distinct)) {
+                attr.forEach(function (a) {
+                    if (a.includes(FUN.distinct)) {
                         _throw('groupBy与distinct不能共用');
                     }
                     funs.push(_geneGroupFuns(a));
@@ -573,7 +573,7 @@ function _jqlRun (get, set) {
         case TYPE.update:{
             for (let i = 0; i < data.length; i++) {
                 if (_jqlCheckWhere(i, get)) {
-                    attr.each(function (item, j) {
+                    attr.forEach(function (item, j) {
                         if (data[i].hasOwnProperty(item)) {
                             data[i][item] = value[j];
                         } else {
@@ -589,7 +589,7 @@ function _jqlRun (get, set) {
         case TYPE.add:{
             for (let i = 0; i < data.length; i++) {
                 if (_jqlCheckWhere(i, get)) {
-                    attr.each(function (item, j) {
+                    attr.forEach(function (item, j) {
                         if (!data[i].hasOwnProperty(item)) {
                             data[i][item] = value[j];
                         } else {
@@ -625,19 +625,19 @@ function _jqlRun (get, set) {
                     set.index(data.length - 1);
                 }
                 if (obj.constructor == Array) {
-                    data.insertArray(obj, get.index());
+                    data.splice(get.index(), 0, ...obj);
                 } else {
-                    data.insert(obj, get.index());
+                    data.splice(get.index(), 0, obj);
                 }
             } else {
                 if (obj.constructor == Array) {
-                    data.appendArray(obj);
+                    data.push(...obj);
                 } else {
-                    data.append(obj);
+                    data.push(obj);
                 }
             }
             _jqlReset(set);
-            return J.clone(data);
+            return clone(data);
         };
 
         case TYPE.delete:{
@@ -656,7 +656,7 @@ function _jqlRun (get, set) {
                 }
             }
             _jqlReset(set);
-            return J.clone(data);
+            return clone(data);
         };
 
         default:{
@@ -665,11 +665,11 @@ function _jqlRun (get, set) {
                 res = [];
                 for (let i = 0; i < data.length; i++) {
                     if (_jqlCheckWhere(i, get)) {
-                        res.push(J.clone(data[i]));
+                        res.push(clone(data[i]));
                     }
                 }
             } else {
-                res = J.clone(data);
+                res = clone(data);
             }
             if (get.orderAttr() != '') {// 没有sele的order
                 res = _checkRunOrderBy(get, res);
@@ -688,8 +688,8 @@ function _jqlGeneInsertData (attr, value) {
     } else {
         let n = 0;
         for (let i = 0; i < value.length; i++) {
-            if (value[i].has(';')) {
-                n = value[i].timeOf(';') + 1;
+            if (value[i].includes(';')) {
+                n = value[i].split(';').length;
                 break;
             }
         }
@@ -702,7 +702,7 @@ function _jqlGeneInsertData (attr, value) {
         } else {
             const values = [];
             for (let i = 0; i < value.length; i++) {
-                if (value[i].has(';')) {
+                if (value[i].includes(';')) {
                     values.push(value[i].split(';'));
                 } else {
                     const arr = [];
@@ -922,7 +922,7 @@ export function Selon (data) {
         };
     }
     this.set = function (data) {
-        let datac = J.clone(data);
+        let datac = clone(data);
         if (datac.constructor == Object) {
             datac = [ datac ];
         }
@@ -935,9 +935,9 @@ export function Selon (data) {
     };
     this.get = function () {
         if (_single) {
-            return J.clone(_data[0]);
+            return clone(_data[0]);
         }
-        return J.clone(_data);
+        return clone(_data);
     };
     this.data = function () {
         if (_single) {
@@ -957,3 +957,7 @@ export function Selon (data) {
     };
 };
 
+export default {
+    selon,
+    Selon
+};
