@@ -28,14 +28,15 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ steps.npm-cache.outputs.dir }}
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-node-
+            ${{ runner.os }}-node-${{ hashFiles('pnpm-lock.yaml') }}
 
-      - name: Npm Install
-        run: |
-          npm install pnpm -g
-          pnpm install
+      - name: Npm Install pnpm
+        run: npm install -g pnpm
+
+      - name: pnpm Install
+        run: pnpm install --no-frozen-lockfile
 
       - name: Version
         id: version
@@ -45,10 +46,24 @@ jobs:
           echo "::set-output name=version::${version}"
 
       - name: Build # build npm
-        run: npm run build -- ${{ steps.version.outputs.version }}
-
-      - name: Build Docs
-        run: npm run build:docs -- ${{ steps.version.outputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPMJS_TOKEN }}
+        run: |
+            git config --global user.email "1506282385@qq.com"
+            git config --global user.name "theajack"
+            git checkout master
+            npx lerna bootstrap
+            npx lerna version ${{ steps.version.outputs.version }} --no-git-tag-version --force-publish --yes
+            npm run build
+            npm run build:docs
+            git add .
+            git commit -m "feat: Version ${{ steps.version.outputs.version }} Build"
+            npx lerna publish from-package --yes
+            npm run init:dev -- ${{ steps.version.outputs.version }}
+            git add .
+            git commit -m "feat: Version ${{ steps.version.outputs.version }} Publish"
+            git push origin master
 
       - name: Pages # github pages
         uses: JamesIves/github-pages-deploy-action@v4.3.0
@@ -64,12 +79,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: Publish # npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPMJS_TOKEN }}
-        run: |
-          cd npm
-          npm publish
-      
       - name: Purge # purge cdn
-        run: npm run purge
+        run: npm run eb:purge -- ${{ steps.version.outputs.version }}

@@ -1,35 +1,39 @@
 /*
  * @Author: tackchen
- * @Date: 2022-08-03 21:07:04
+ * @Date: 2022-10-23 20:12:31
  * @Description: Coding something
  */
 
-const {
-  copyFile, buildPackageJson, writeJsonIntoFile,
-  writeFile,
-} = require('../utils');
-const pkg = require('../../package.json');
-const {build, builddts} = require('../rollup.base');
+const execa = require('execa');
+const { afterBuild } = require('../build.config');
+const { resolveRootPath } = require('../helper/utils');
 
+const dirName = process.argv[2];
 
-async function main () {
-  const version = process.argv[2];
-  if (!version) throw new Error('Invalid version');
-  pkg.version = version;
-  writeJsonIntoFile('@package.json', pkg);
+console.log(`dirName=${dirName}`);
 
-  writeFile('@src/version.ts', `export default '${pkg.version}';`);
-  await build();
-  await builddts();
-  buildPackageJson();
-  copyFiles();
+async function build () {
+    // if (dirName !== 'test') return;
+    await execa(
+        resolveRootPath('node_modules/rollup/dist/bin/rollup'),
+        [
+            '-c',
+            resolveRootPath('scripts/build/rollup.config.js'),
+            '--environment',
+            [
+                `PACKAGE_NAME:${dirName}`,
+                `NODE_ENV:production`,
+            ],
+        ],
+        { stdio: 'inherit' },
+    );
 }
 
-
-function copyFiles () {
-  copyFile('@LICENSE', '@npm/LICENSE');
-  copyFile('@README.md', '@npm/README.md');
+async function main () {
+    await build();
+    await afterBuild(dirName);
 }
 
 main();
+
 

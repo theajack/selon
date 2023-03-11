@@ -1,0 +1,13 @@
+lockfileVersion: 5.4
+
+specifiers:
+  jetterjs: ^0.0.1
+
+dependencies:
+  jetterjs: 0.0.1
+
+packages:
+
+  /jetterjs/0.0.1:
+    resolution: {integrity: sha512-HCjcrOIWoaFyU9BU1TVYm5Cis1u/rg8K8WQtQB2T+tIMYigXDOva/G0P+Nfnq0dO5ovpX6uo6gauQOSminvFsA==}
+    dev: false
