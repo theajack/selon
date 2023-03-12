@@ -14,7 +14,7 @@
         "jetterjs": "^0.0.1",
         "selon": "0.0.1"
     },
-    "unpkg": "dist/demo-utils.min.js",
-    "jsdelivr": "dist/demo-utils.min.js",
+    "unpkg": "dist/selon-view.iife.js",
+    "jsdelivr": "dist/selon-view.iife.js",
     "module": "dist/selon-view.esm.js"
 }

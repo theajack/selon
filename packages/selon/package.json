@@ -10,10 +10,8 @@
         "build": "node ../../scripts/build/build.js selon"
     },
     "license": "",
-    "dependencies": {
-        "undefined": "^0.1.0"
-    },
-    "unpkg": "dist/demo-main.min.js",
-    "jsdelivr": "dist/demo-main.min.js",
+    "dependencies": {},
+    "unpkg": "dist/selon.iife.js",
+    "jsdelivr": "dist/selon.iife.js",
     "module": "dist/selon.esm.js"
 }
