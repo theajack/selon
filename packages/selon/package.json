@@ -2,8 +2,8 @@
     "name": "selon",
     "version": "0.0.2",
     "description": "Select from Json: Json Query Language",
-    "main": "dist/selon.umd.js",
-    "typings": "dist/selon.d.ts",
+    "main": "src/index.ts",
+    "typings": "src/index.ts",
     "repository": "git@github.com:theajack/selon.git",
     "author": "tackchen <theajack@qq.com>",
     "scripts": {
