@@ -1,9 +1,9 @@
 {
     "name": "selon-view",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Select from Json: Json Query Language",
-    "main": "src/index.ts",
-    "typings": "src/index.ts",
+    "main": "dist/selon-view.umd.js",
+    "typings": "dist/selon-view.d.ts",
     "repository": "git@github.com:theajack/selon.git",
     "author": "tackchen <theajack@qq.com>",
     "scripts": {
@@ -12,7 +12,7 @@
     "license": "",
     "dependencies": {
         "jetterjs": "^0.0.1",
-        "selon": "0.0.1"
+        "selon": "^0.0.2"
     },
     "unpkg": "dist/selon-view.iife.js",
     "jsdelivr": "dist/selon-view.iife.js",
