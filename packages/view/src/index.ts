@@ -4,9 +4,9 @@
  * @Description: Coding something
  */
 import { Selon, selon } from 'selon';
-import { SelonView } from './selon-view';
+import { SelonView } from './selon-view.js';
 
-export { SelonView } from './selon-view';
+export { SelonView } from './selon-view.js';
 export { Selon, selon } from 'selon';
 
 export default {

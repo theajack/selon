@@ -3,9 +3,11 @@
  * @Date: 2023-03-11 09:15:13
  * @Description: Coding something
  */
-// import { Selon, selon } from './selon';
+import { Selon, selon } from './selon.js';
 
-import DEF from './selon';
+export { Selon, selon } from './selon.js';
 
-export const selon = DEF.selon;
-export const Selon = DEF.Selon;
+export default {
+    selon,
+    Selon,
+};

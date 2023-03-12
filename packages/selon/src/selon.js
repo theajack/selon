@@ -141,7 +141,7 @@ function _jqlWhere (get, set, attr, value, run) {
             _jqlSetCondAttrAndValue(attr, set);
             run = value;
         } else {
-            if (value != undefined && value.constructor == String) {
+            if (typeof value === 'string' || value instanceof Array) {
                 set.condAttr(_checkString(attr));
                 set.condValue(_checkString(value));
             } else {// 复杂模式 bool表达式
@@ -163,20 +163,26 @@ function _jqlCheckWhere (index, get, realI) {
                     return false;
                 }
             }
-        } else {// bool表达式
-            let code = '';
-            for (const key in data) {
-                if (attr.includes(key)) {
-                    let v = data[key];
-                    v = typeof v === 'string' ? `"${v}"` : v;
-                    code += `var ${key}=${v};`;
+        } else {
+            // bool表达式
+            if (typeof attr === 'string') {
+                let code = '';
+                for (const key in data) {
+                    if (attr.includes(key)) {
+                        let v = data[key];
+                        v = typeof v === 'string' ? `"${v}"` : v;
+                        code += `var ${key}=${v};`;
+                    }
                 }
+                code += `return ${attr};`;
+                const $index = typeof realI === 'number' ? realI : index;
+                return new Function(
+                    '$index', '$i', '$data', code
+                )($index, index, data);
+            } else {
+                // 函数
+                return attr(data, index);
             }
-            code += `return ${attr};`;
-            const $index = typeof realI === 'number' ? realI : index;
-            return new Function(
-                '$index', '$i', '$data', code
-            )($index, index, data);
         }
     }
     return true;
