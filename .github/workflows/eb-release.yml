@@ -80,4 +80,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Purge # purge cdn
-        run: npm run eb:purge -- ${{ steps.version.outputs.version }}
+        run: npm run purge -- ${{ steps.version.outputs.version }}

@@ -18,7 +18,8 @@
         "build:docs": "node scripts/docs/build-docs.js",
         "init:package": "node ./scripts/init-packages-info.js",
         "init:dev": "node ./scripts/init-packages-info.js dev",
-        "init:dep": "node scripts/init-learn-dep.js"
+        "init:dep": "node scripts/init-learn-dep.js",
+        "purge": "node ./scripts/purge-cdn.js"
     },
     "license": "",
     "devDependencies": {
