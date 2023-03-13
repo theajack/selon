@@ -109,7 +109,7 @@ var result=selon(data).select("*").run();
 ```js
 var data = [{name:"name1",pw:"p1",age:21},
 		{name:"name2",pw:"p2",age:22}];
-const users = selon(data);
+var users = selon(data);
 var result=users.select("*",true);
 var result1=users.select("name",true);
 var result2=users.select("name,age",true);
@@ -129,7 +129,7 @@ var data=[{name:"n1",age:10,sex:"男"},
 		{name:"n2",age:12,sex:"男"},
 		{name:"n3",age:20,sex:"女"},
 		{name:"n4",age:22,sex:"女"}];
-const users = selon(data);
+var users = selon(data);
 var result=users.select("name 昵称,age",true);
 var result1=users.select("name 昵称,age 年龄",true);
 ```
@@ -148,7 +148,7 @@ var data=[{name:"name1",pw:"p"},
 		{name:"name2",pw:"p"},
 		{name:"name3",pw:"p3"},
 		{name:"name3",pw:"p3"},];
-const users = selon(data);
+var users = selon(data);
 var result=users.select("distinct pw",true);
 var result1=users.select("distinct pw,name",true);
 ```
@@ -220,7 +220,7 @@ selon(data).update({
 ```js
 var data=[{name:"name1"},
 		{name:"name2"}];
-const users = selon(data);
+var users = selon(data);
 users.add("pw","same pw",true);
 users.add("age,sex","20,男",true);
 ```
@@ -237,7 +237,7 @@ Add Validation
 ```js
 var data=[{name:"name1"},
 		{name:"name2"}];
-const users = selon(data);
+var users = selon(data);
 users.add({
 	pw:"same pw",
 	age:20,
@@ -257,7 +257,7 @@ users.add({
 ```js
 var data=[{name:"name1",pw:"p1",age:21,sex:"男"},
 	{name:"name2",pw:"p2",age:22,sex:"女"}];
-const users = selon(data);
+var users = selon(data);
 users.remove("pw",true);
 users.remove("age,sex",true);
 ```
@@ -274,7 +274,7 @@ users.remove("age,sex",true);
 ```js
 var data=[{name:"name1",pw:"p1"},
 	{name:"name2",pw:"p2"}];
-const users = selon(data);
+var users = selon(data);
 users.insert("name,pw","new name,new pw",true);
 users.insert("name,pw","new name1;new name2,new pw1;new pw2",true);
 users.insert("name,pw","name common,new pw1;new pw2",true);
@@ -291,7 +291,7 @@ users.insert("name,pw","name common,new pw1;new pw2",true);
 ```js
 var data=[{name:"name1",pw:"p1"},
 	{name:"name2",pw:"p2"}];
-const users = selon(data);
+var users = selon(data);
 users.insert({
 	name:"new name",
 	pw:"new pw"
@@ -317,7 +317,7 @@ users.insert([{
 ```js
 var data=[{name:"name1",pw:"p1"},
 	{name:"name2",pw:"p2"}];
-const users = selon(data);
+var users = selon(data);
 users.insert("name,pw","new,new1;new2",1,true);//索引是从0开始
 users.insert({
 	name:"new name1",
@@ -337,7 +337,7 @@ users.insert({
 ```js
 var data=[{name:"name1",pw:"p1"},
 	{name:"name2",pw:"p2"}];
-const users = selon(data);
+var users = selon(data);
 users.delete(true);
 //若需要删除某个特点元素，请与where语句同时使用
 ```
@@ -354,7 +354,7 @@ users.delete(true);
 ```js
 var data=[{name:"name1",pw:"p1"},
 	{name:"name2",pw:"p2"}];
-const users = selon(data);
+var users = selon(data);
 users.delete(0,true);//删除第一个元素
 ```
 
@@ -371,7 +371,7 @@ users.delete(0,true);//删除第一个元素
 var data=[{name:"same name",pw:"p1"},
 	{name:"same name",pw:"p2"},
 	{name:"name3",pw:"p3"}];
-const users = selon(data);
+var users = selon(data);
 var result=users.select("*").where("name","same name",true);
 var result=users.select("*").where("name,pw","same name,p1",true);//多个条件之间是and的关系
 ```
@@ -389,7 +389,7 @@ var result=users.select("*").where("name,pw","same name,p1",true);//多个条件
 var data=[{name:"same name",pw:"p1"},
 	{name:"same name",pw:"p2"},
 	{name:"name3",pw:"p3"}];
-const users = selon(data);
+var users = selon(data);
 var result=users.select("*").where({
 	name:"same name",
 	pw:"p1"
@@ -409,7 +409,7 @@ var result=users.select("*").where({
 var data=[{name:"same name",pw:"p1",age:11,marry:true},
 	{name:"same name",pw:"p2",age:12,marry:false},
 	{name:"name3",pw:"p3",age:13,marry:false}];
-const users = selon(data);
+var users = selon(data);
 //尝试按照js语法编写你自己的布尔表达式
 //如 "age>=12" "marry" "!marry"等，或将他们使用 && ||组合使用
 var result=users.select("name,age").where("name=='same name'",true);
@@ -434,7 +434,7 @@ var data=[{name:"n1",age:10},
 	{name:"n2",age:10},
 	{name:"n3",age:20},
 	{name:"n4",age:20}];
-const users = selon(data);
+var users = selon(data);
 var result=users.groupBy("age",true);
 var result=users.groupBy("age").where("name!='n2'",true);
 //groupBy 和 where 先后顺序可以调换
@@ -455,7 +455,7 @@ var data=[{name:"n1",age:10,sex:"男"},
 	{name:"n2",age:12,sex:"男"},
 	{name:"n3",age:20,sex:"女"},
 	{name:"n4",age:22,sex:"女"}];
-const users = selon(data);
+var users = selon(data);
 var result=users.select("count(age)",true);
 var result=users.select("count(age),sex").groupBy("sex",true);
 //由于篇幅有限，请读者自行使用一下 count,sum,avg,min,max,first,last,count(distinct) 函数
@@ -476,7 +476,7 @@ var data=[{name:"n1",age:14,sex:"男"},
 	{name:"n2",age:12,sex:"男"},
 	{name:"n3",age:20,sex:"女"},
 	{name:"n4",age:16,sex:"女"}];
-const users = selon(data);
+var users = selon(data);
 var result=users.orderBy("age",true);
 var result=users.select("name").orderBy("age",true);
 var result=users.select("name").groupBy("sex").orderBy("age",true);
@@ -496,7 +496,7 @@ var data=[{name:"n1",age:14},
 	{name:"n2",age:12},
 	{name:"n3",age:20},
 	{name:"n4",age:16}];
-const users = selon(data);
+var users = selon(data);
 var result=users.orderBy("age","desc",true);
 ```
 
@@ -514,7 +514,7 @@ var data=[{name:"aaa",height:170,birth:"1994-03-01"},
 	{name:"dd",height:180,birth:"1994-02-01"},
 	{name:"ccccc",height:176,birth:"1994/08/01"},
 	{name:"bbbbbb",height:177,birth:"1994/07/01"}]; 
-const users = selon(data);
+var users = selon(data);
 var result=users.orderBy("birth","date",true);
 var result=users.orderBy("name","length",true);
 var result=users.orderBy("name","desc","headLetter",true);
@@ -534,7 +534,7 @@ var result=users.orderBy("height","desc","number",true);
 ```js
 var data=[{name:"n1",age:14},
 	{name:"n2",age:12}];
-const users = selon(data);
+var users = selon(data);
 var newdata=[{name:"new1",age:12},
 	{name:"new2",age:12},
 	{name:"new3",age:12}];
@@ -554,7 +554,7 @@ users.set(newdata);
 ```js
 var data=[{name:"n1",age:14},
 	{name:"n2",age:12}];
-const users = selon(data);
+var users = selon(data);
 var data=users.get();
 </script>
 ```
@@ -571,7 +571,7 @@ var data=users.get();
 ```js
 var data=[{name:"n1",age:14},
 	{name:"n2",age:12}];
-const users = selon(data);
+var users = selon(data);
 function dataTest(){
 var data=users.data();
 ```
@@ -588,7 +588,7 @@ var data=users.data();
 ```js
 var data=[{name:"n1",age:14},
 	{name:"n2",age:12}];
-const users = selon(data);
+var users = selon(data);
 users.clear();
 ```
 

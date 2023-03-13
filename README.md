@@ -109,7 +109,7 @@ Queries the specified properties of each element in the data and composes a new 
 ```js
 var data = [{name:"name1",pw:"p1",age:21},
 		{name:"name2",pw:"p2",age:22}];
-const users = selon(data);
+var users = selon(data);
 var result=users.select("*",true);
 var result1=users.select("name",true);
 var result2=users.select("name,age",true);
@@ -128,7 +128,7 @@ var data=[{name:"n1",age:10,sex:"male"},
 		{name:"n2",age:12,sex:"male"},
 		{name:"n3",age:20,sex:"female"},
 		{name:"n4",age:22,sex:"female"}];
-const users = selon(data);
+var users = selon(data);
 var result=users.select("name nickname,age",true);
 var result1=users.select("name nickname, age age", true);
 ```
@@ -146,7 +146,7 @@ var data=[{name:"name1",pw:"p"},
 		{name:"name2",pw:"p"},
 		{name:"name3",pw:"p3"},
 		{name:"name3",pw:"p3"},];
-const users = selon(data);
+var users = selon(data);
 var result=users.select("distinct pw",true);
 var result1=users.select("distinct pw,name",true);
 
@@ -217,7 +217,7 @@ Add the property as a string. You cannot add an existing attribute, otherwise an
 ```js
 var data=[{name:"name1"},
 		{name:"name2"}];
-const users = selon(data);
+var users = selon(data);
 users.add("pw","same pw",true);
 users.add("age,sex","20,male",true);
 
@@ -234,7 +234,7 @@ Add properties in JSON format. You cannot add an existing attribute, otherwise a
 ```js
 var data=[{name:"name1"},
 		{name:"name2"}];
-const users = selon(data);
+var users = selon(data);
 users.add({
 	pw:"same pw",
 	age:20,
@@ -253,7 +253,7 @@ Remove the element's attributes.
 ```js
 var data=[{name:"name1",pw:"p1",age:21,sex:"male"},
 	{name:"name2",pw:"p2",age:22,sex:"female"}];
-const users = selon(data);
+var users = selon(data);
 users.remove("pw",true);
 users.remove("age,sex",true);
 ```
@@ -269,7 +269,7 @@ Inserts an element as a string. This method is only valid for selon objects whos
 ```js
 var data=[{name:"name1",pw:"p1"},
 	{name:"name2",pw:"p2"}];
-const users = selon(data);
+var users = selon(data);
 users.insert("name,pw","new name,new pw",true);
 users.insert("name,pw","new name1; new name2,new pw1; new pw2",true);
 users.insert("name,pw","name common,new pw1; new pw2",true);
@@ -287,7 +287,7 @@ Insert JSON or JSON arrays. This method is only valid for selon objects whose da
 ```js
 var data=[{name:"name1",pw:"p1"},
 	{name:"name2",pw:"p2"}];
-const users = selon(data);
+var users = selon(data);
 users.insert({
 	name:"new name",
 	pw:"new pw"
@@ -312,7 +312,7 @@ Inserts an element at the specified location. This method is only valid for selo
 ```js
 var data=[{name:"name1",pw:"p1"},
 	{name:"name2",pw:"p2"}];
-const users = selon(data);
+var users = selon(data);
 users.insert("name,pw","new,new1; new2",1,true);// indexes are 0-based
 users.insert({
 	name:"new name1",
@@ -331,7 +331,7 @@ Delete an element. To remove elements that meet specific requirements, use them 
 ```js
 var data=[{name:"name1",pw:"p1"},
 	{name:"name2",pw:"p2"}];
-const users = selon(data);
+var users = selon(data);
 users.delete(true);
 // If you need to delete a feature element, use it with the where statement
 ```
@@ -347,7 +347,7 @@ Specifies the location to delete. To remove elements that meet specific requirem
 ```js
 var data=[{name:"name1",pw:"p1"},
 	{name:"name2",pw:"p2"}];
-const users = selon(data);
+var users = selon(data);
 users.delete(0,true);//Delete the first element
 ```
 
@@ -363,7 +363,7 @@ Make a conditional deletion of other statements (including select, update, add, 
 var data=[{name:"same name",pw:"p1"},
 	{name:"same name",pw:"p2"},
 	{name:"name3",pw:"p3"}];
-const users = selon(data);
+var users = selon(data);
 var result=users.select("*").where("name","same name",true);
 var result=users.select("*").where("name,pw","same name,p1",true);//The relationship between multiple conditions is AND
 ```
@@ -380,7 +380,7 @@ Use JSON to make a conditional deletion of other statements. The effect is simil
 var data=[{name:"same name",pw:"p1"},
 	{name:"same name",pw:"p2"},
 	{name:"name3",pw:"p3"}];
-const users = selon(data);
+var users = selon(data);
 var result=users.select("*").where({
 	name:"same name",
 	pw:"p1"
@@ -400,7 +400,7 @@ Make a conditional deletion of other statements in the form of a js boolean expr
 var data=[{name:"same name",pw:"p1",age:11,marry:true},
 	{name:"same name",pw:"p2",age:12,marry:false},
 	{name:"name3",pw:"p3",age:13,marry:false}];
-// const users = selon(data);
+// var users = selon(data);
 Try writing your own boolean expressions following the js syntax
 Such as "age>=12" "marry" "!marry", etc., or use them &&|| Combined use
 var result=users.select("name,age").where("name=='same name'",true);
@@ -424,7 +424,7 @@ var data=[{name:"n1",age:10},
 	{name:"n2",age:10},
 	{name:"n3",age:20},
 	{name:"n4",age:20}];
-const users = selon(data);
+var users = selon(data);
 var result=users.groupBy("age",true);
 var result=users.groupBy("age").where("name!='n2'",true);
 // The order of groupBy and where can be reversed
@@ -444,7 +444,7 @@ var data=[{name:"n1",age:10,sex:"male"},
 	{name:"n2",age:12,sex:"male"},
 	{name:"n3",age:20,sex:"female"},
 	{name:"n4",age:22,sex:"female"}];
-const users = selon(data);
+var users = selon(data);
 var result=users.select("count(age)",true);
 var result=users.select("count(age),sex").groupBy("sex",true);
 // Due to space limitations, readers are invited to use the count, sum, avg, min, max, first, last, count(distinct) functions
@@ -463,7 +463,7 @@ var data=[{name:"n1",age:14,sex:"male"},
 	{name:"n2",age:12,sex:"male"},
 	{name:"n3",age:20,sex:"female"},
 	{name:"n4",age:16,sex:"female"}];
-const users = selon(data);
+var users = selon(data);
 var result=users.orderBy("age",true);
 var result=users.select("name").orderBy("age",true);
 var result=users.select("name").groupBy("sex").orderBy("age",true);
@@ -482,7 +482,7 @@ var data=[{name:"n1",age:14},
 	{name:"n2",age:12},
 	{name:"n3",age:20},
 	{name:"n4",age:16}];
-const users = selon(data);
+var users = selon(data);
 var result=users.orderBy("age","desc",true);
 ```
 
@@ -499,7 +499,7 @@ var data=[{name:"aaa",height:170,birth:"1994-03-01"},
 	{name:"dd",height:180,birth:"1994-02-01"},
 	{name:"ccccc",height:176,birth:"1994/08/01"},
 	{name:"bbbbbb",height:177,birth:"1994/07/01"}]; 
-const users = selon(data);
+var users = selon(data);
 var result=users.orderBy("birth","date",true);
 var result=users.orderBy("name","length",true);
 var result=users.orderBy("name","desc","headLetter",true);
@@ -518,7 +518,7 @@ Set up new data. The setting is a clone version, and changes to the set data wil
 ```js
 var data=[{name:"n1",age:14},
 	{name:"n2",age:12}];
-const users = selon(data);
+var users = selon(data);
 var newdata=[{name:"new1",age:12},
 	{name:"new2",age:12},
 	{name:"new3",age:12}];
@@ -537,7 +537,7 @@ The clone version of the BQL data is obtained, and its data changes will not aff
 ```js
 var data=[{name:"n1",age:14},
 	{name:"n2",age:12}];
-const users = selon(data);
+var users = selon(data);
 var data=users.get();
 
 ```
@@ -553,7 +553,7 @@ The original BQL data is obtained, and its data changes will affect the BQL
 ```js
 var data=[{name:"n1",age:14},
 	{name:"n2",age:12}];
-const users = selon(data);
+var users = selon(data);
 function dataTest(){
 var data=users.data();
 ```
@@ -569,7 +569,7 @@ Empty the data of the BQL object. The array type selon's data is set to [], and 
 ```js
 var data=[{name:"n1",age:14},
 	{name:"n2",age:12}];
-const users = selon(data);
+var users = selon(data);
 users.clear();
 ```
 
