@@ -104,7 +104,7 @@ Query statements
 
 Queries the specified properties of each element in the data and composes a new data (the data can be arrays, objects, or other single-valued types). <span class='red'> If you only want to take effect on data that meets the requirements of a certain feature, you need to use it with the where method, which will be described in a later section. </span>
 
-'Parameters: String(attribute), [Boolean(run)]; Return value: data| BQL`
+'Parameters: String(attribute), [Boolean(run)]; Return value: data| Selon`
 
 ```js
 var data = [{name:"name1",pw:"p1",age:21},
@@ -121,7 +121,7 @@ Alias the column names
 
 Aliases query results. The property name of the query result is replaced by the alias.
 
-'Parameters: String (property alias), [Boolean(run)]; Return value: data| BQL`
+'Parameters: String (property alias), [Boolean(run)]; Return value: data| Selon`
 
 ```js
 var data=[{name:"n1",age:10,sex:"male"},
@@ -139,7 +139,7 @@ Deduplicate query results
 
 Deduplicate query results. If there are multiple attributes, multiple attributes that are the same will be removed.
 
-'Parameters: String(attribute), [Boolean(run)]; Return value: data| BQL`
+'Parameters: String(attribute), [Boolean(run)]; Return value: data| Selon`
 
 ```js
 var data=[{name:"name1",pw:"p"},
@@ -158,7 +158,7 @@ Use aggregate functions
 
 Use aggregate functions on your data. Aggregate functions include count, count(distinct), sum, avg, min, max, first, last. When not used with groupBy, select can only contain one attribute with an aggregate function, not other attributes.
 
-'Parameters: String(func(attribute)),[Boolean(run)]; Return value: data| BQL`
+'Parameters: String(func(attribute)),[Boolean(run)]; Return value: data| Selon`
 
 ```js
 var data=[{name:"n1",age:10,sex:"male"},
@@ -177,7 +177,7 @@ Update the value of the property
 
 Update (modify) the value of a property in the data as a string. The disadvantage is that the value type is converted to a string. If the original data is not a string type, the original data type is destroyed.
 
-'Parameters: String (property), String (value), [Boolean(run)]; Return value: data| BQL`
+'Parameters: String (property), String (value), [Boolean(run)]; Return value: data| Selon`
 
 ```js
 var data=[{name:"name1",pw:"p1",age:21},
@@ -193,7 +193,7 @@ Update the value of the property
 
 Update (modify) the value of an attribute in the data in JSON format. Fixed the disadvantage that the previous section could only be a string. Can only be any type without destroying the original data type.
 
-'parameters: JSON,[Boolean(run)]; Return value: data| BQL`
+'parameters: JSON,[Boolean(run)]; Return value: data| Selon`
 
 ```js
 var data=[{name:"name1",pw:"p1",age:21},
@@ -212,7 +212,7 @@ Add properties
 
 Add the property as a string. You cannot add an existing attribute, otherwise an error will be reported
 
-'Parameters: String (property), String (value), [Boolean(run)]; Return value: data| BQL`
+'Parameters: String (property), String (value), [Boolean(run)]; Return value: data| Selon`
 
 ```js
 var data=[{name:"name1"},
@@ -229,7 +229,7 @@ Add Validation
 
 Add properties in JSON format. You cannot add an existing attribute, otherwise an error will be reported
 
-'parameters: JSON,[Boolean(run)]; Return value: data| BQL`
+'parameters: JSON,[Boolean(run)]; Return value: data| Selon`
 
 ```js
 var data=[{name:"name1"},
@@ -248,7 +248,7 @@ Remove the attribute
 
 Remove the element's attributes.
 
-'Parameters: String(attribute), [Boolean(run)]; Return value: data| BQL`
+'Parameters: String(attribute), [Boolean(run)]; Return value: data| Selon`
 
 ```js
 var data=[{name:"name1",pw:"p1",age:21,sex:"male"},
@@ -264,7 +264,7 @@ Insert an element
 
 Inserts an element as a string. This method is only valid for selon objects whose data is arrays
 
-'Parameters: String (property), String (value), [Boolean(run)]; Return value: data| BQL`
+'Parameters: String (property), String (value), [Boolean(run)]; Return value: data| Selon`
 
 ```js
 var data=[{name:"name1",pw:"p1"},
@@ -282,7 +282,7 @@ Insert an element
 
 Insert JSON or JSON arrays. This method is only valid for selon objects whose data is arrays
 
-'Parameter: JSON| JSON Array,[Boolean(run)]; Return value: data| BQL`
+'Parameter: JSON| JSON Array,[Boolean(run)]; Return value: data| Selon`
 
 ```js
 var data=[{name:"name1",pw:"p1"},
@@ -307,7 +307,7 @@ Specifies the location to insert
 
 Inserts an element at the specified location. This method is only valid for selon objects whose data is arrays
 
-'Parameter: (JSON| JSON Array)| (String,String),[int],[Boolean(run)]; Return value: data| BQL`
+'Parameter: (JSON| JSON Array)| (String,String),[int],[Boolean(run)]; Return value: data| Selon`
 
 ```js
 var data=[{name:"name1",pw:"p1"},
@@ -326,7 +326,7 @@ Delete an element
 
 Delete an element. To remove elements that meet specific requirements, use them in conjunction with the where method. This method is only valid for selon objects whose data is arrays
 
-'parameter: [Boolean(run)]; Return value: data| BQL`
+'parameter: [Boolean(run)]; Return value: data| Selon`
 
 ```js
 var data=[{name:"name1",pw:"p1"},
@@ -342,7 +342,7 @@ Specifies the location to delete
 
 Specifies the location to delete. To remove elements that meet specific requirements, use them in conjunction with the where method. This method is only valid for selon objects whose data is arrays
 
-'parameters: [int],[Boolean(run)]; Return value: data| BQL`
+'parameters: [int],[Boolean(run)]; Return value: data| Selon`
 
 ```js
 var data=[{name:"name1",pw:"p1"},
@@ -357,7 +357,7 @@ Conditional judgment
 
 Make a conditional deletion of other statements (including select, update, add, remove, delete, groupBy, orderBy) in the form of String, and the elements that do not meet the conditions will not execute other statements. For multiple conditions, only the AND relationship between them is satisfied. For something else, refer to .where(exp). This method is only valid for selon objects whose data is arrays
 
-'Parameters: String (property), String (value), [Boolean(run)]; Return value: data| BQL`
+'Parameters: String (property), String (value), [Boolean(run)]; Return value: data| Selon`
 
 ```js
 var data=[{name:"same name",pw:"p1"},
@@ -374,7 +374,7 @@ Conditional judgment
 
 Use JSON to make a conditional deletion of other statements. The effect is similar to the previous section. For multiple conditions, only the AND relationship between them is satisfied. For something else, refer to .where(exp).
 
-'parameters: JSON,[Boolean(run)]; Return value: data| BQL`
+'parameters: JSON,[Boolean(run)]; Return value: data| Selon`
 
 ```js
 var data=[{name:"same name",pw:"p1"},
@@ -394,7 +394,7 @@ Conditional judgment
 
 Make a conditional deletion of other statements in the form of a js boolean expression. The effect is similar to the previous section. For multiple conditions, you can customize the AND or NOT relationship between them, following the JS syntax.
 
-'Parameters: String(Boolean expression), [Boolean(run)]; Return value: data| BQL`
+'Parameters: String(Boolean expression), [Boolean(run)]; Return value: data| Selon`
 
 ```js
 var data=[{name:"same name",pw:"p1",age:11,marry:true},
@@ -417,7 +417,7 @@ Group data
 
 To group data, parameters can only be a single property, which can be used separately, returning a two-dimensional array. However, it is usually used with aggregate functions, as described in the next section. Can be used in conjunction with the where statement.
 
-'Parameters: String (single property), [Boolean(run)]; Return value: data| BQL`
+'Parameters: String (single property), [Boolean(run)]; Return value: data| Selon`
 
 ```js
 var data=[{name:"n1",age:10},
@@ -437,7 +437,7 @@ Use aggregate functions
 
 Group data and use aggregate functions for grouping. Aggregate functions include count, count(distinct), sum, avg, min, max, first, last.
 
-'Parameters: String(attribute), [Boolean(run)]; Return value: data| BQL`
+'Parameters: String(attribute), [Boolean(run)]; Return value: data| Selon`
 
 ```js
 var data=[{name:"n1",age:10,sex:"male"},
@@ -454,9 +454,9 @@ var result=users.select("count(age),sex").groupBy("sex",true);
 
 Sort the data
 
-Sorts BQL data based on a certain attribute, and returns the sorting result, which is ascending by default. Sorting does not affect the original data.
+Sorts Selon data based on a certain attribute, and returns the sorting result, which is ascending by default. Sorting does not affect the original data.
 
-'Parameters: String (single property), [Boolean(run)]; Return value: data| BQL`
+'Parameters: String (single property), [Boolean(run)]; Return value: data| Selon`
 
 ```js
 var data=[{name:"n1",age:14,sex:"male"},
@@ -473,9 +473,9 @@ var result=users.select("name").groupBy("sex").orderBy("age",true);
 
 Sort the data
 
-Sorts BQL data based on an attribute and returns the sorting result. You can choose ascending or sorting. Order types are not case-sensitive.
+Sorts Selon data based on an attribute and returns the sorting result. You can choose ascending or sorting. Order types are not case-sensitive.
 
-'Parameters: String(single attribute), [String(desc|asc)], [Boolean(run)]; Return value: data| BQL`
+'Parameters: String(single attribute), [String(desc|asc)], [Boolean(run)]; Return value: data| Selon`
 
 ```js
 var data=[{name:"n1",age:14},
@@ -490,9 +490,9 @@ var result=users.orderBy("age","desc",true);
 
 Sort the data
 
-Sorts BQL data based on an attribute and returns the sorting result. You can select the type of attribute value. Value types are case-sensitive and there are the following types (data, length, headLetter, Number), where Number is the default value.
+Sorts Selon data based on an attribute and returns the sorting result. You can select the type of attribute value. Value types are case-sensitive and there are the following types (data, length, headLetter, Number), where Number is the default value.
 
-'Parameters: String(single attribute), [String(desc|asc)], [String], [Boolean(run)]; Return value: data| BQL`
+'Parameters: String(single attribute), [String(desc|asc)], [String], [Boolean(run)]; Return value: data| Selon`
 
 ```js
 var data=[{name:"aaa",height:170,birth:"1994-03-01"},
@@ -511,7 +511,7 @@ var result=users.orderBy("height","desc","number",true);
 
 Set up new data
 
-Set up new data. The setting is a clone version, and changes to the set data will not affect the BQL data. The type of the data to be set must be the same as the original data, otherwise an exception will be thrown.
+Set up new data. The setting is a clone version, and changes to the set data will not affect the Selon data. The type of the data to be set must be the same as the original data, otherwise an exception will be thrown.
 
 'parameter: data; Return value: data'
 
@@ -523,14 +523,14 @@ var newdata=[{name:"new1",age:12},
 	{name:"new2",age:12},
 	{name:"new3",age:12}];
 users.set(newdata);
-// The following is to prove that the settings are a clone version of newdata, and changes to newdata data will not affect BQL
+// The following is to prove that the settings are a clone version of newdata, and changes to newdata data will not affect Selon
 ```
 
 ### 24. .get()
 
 Get the cloned data
 
-The clone version of the BQL data is obtained, and its data changes will not affect the BQL.
+The clone version of the Selon data is obtained, and its data changes will not affect the Selon.
 
 'Return value: data'
 
@@ -546,7 +546,7 @@ var data=users.get();
 
 Get the original data
 
-The original BQL data is obtained, and its data changes will affect the BQL
+The original Selon data is obtained, and its data changes will affect the Selon
 
 'Return value: data'
 
@@ -562,7 +562,7 @@ var data=users.data();
 
 Clear the data
 
-Empty the data of the BQL object. The array type selon's data is set to [], and the object type is set to {} or null
+Empty the data of the Selon object. The array type selon's data is set to [], and the object type is set to {} or null
 
 'Return value: data'
 

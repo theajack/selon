@@ -104,7 +104,7 @@ var result=selon(data).select("*").run();
 
 查询数据中每个元素的指定属性，并组成一个新的数据（数据可以是数组，对象或其他单值类型）。<span class='red'>若只希望对满足某特点要求的数据生效，需要与where方法共同使用，后面章节会介绍到。</span>
 
-`参数:String(属性),[Boolean(run)];返回值:data|BQL`
+`参数:String(属性),[Boolean(run)];返回值:data|Selon`
 
 ```js
 var data = [{name:"name1",pw:"p1",age:21},
@@ -122,7 +122,7 @@ var result2=users.select("name,age",true);
 
 对查询结果起别名。查询结果的属性名会被别名代替。
 
-`参数:String(属性 别名),[Boolean(run)];返回值:data|BQL`
+`参数:String(属性 别名),[Boolean(run)];返回值:data|Selon`
 
 ```js
 var data=[{name:"n1",age:10,sex:"男"},
@@ -141,7 +141,7 @@ var result1=users.select("name 昵称,age 年龄",true);
 
 对查询结果去重。若是有多个属性，则多个属性都相同的才会被去掉。
 
-`参数:String(属性),[Boolean(run)];返回值:data|BQL`
+`参数:String(属性),[Boolean(run)];返回值:data|Selon`
 
 ```js
 var data=[{name:"name1",pw:"p"},
@@ -160,7 +160,7 @@ var result1=users.select("distinct pw,name",true);
 
 对数据使用聚合函数。聚合函数包含count,count(distinct ),sum,avg,min,max,first,last。没有与groupBy共同使用时select仅能包含一个带有聚合函数的属性，不能包含其他属性。
 
-`参数:String(func(属性)),[Boolean(run)];返回值:data|BQL`
+`参数:String(func(属性)),[Boolean(run)];返回值:data|Selon`
 
 ```js
 var data=[{name:"n1",age:10,sex:"男"},
@@ -179,7 +179,7 @@ var result1=selon(data).select("sum(age) 总和",true);//也可以设置别名
 
 以字符串的方式更新（修改）数据中的属性的值。缺点是值类型会被转换成字符串。若原数据不是字符串类型，则会破坏原数据类型。
 
-`参数:String(属性),String(值),[Boolean(run)];返回值:data|BQL`
+`参数:String(属性),String(值),[Boolean(run)];返回值:data|Selon`
 
 ```js
 var data=[{name:"name1",pw:"p1",age:21},
@@ -196,7 +196,7 @@ selon(data).update("name,age","same name,same age",true);
 
 以JSON格式更新（修改）数据中的属性的值。解决了上一节只能是字符串的缺点。只可以是任意类型且不会破坏原数据类型。
 
-`参数:JSON,[Boolean(run)];返回值:data|BQL`
+`参数:JSON,[Boolean(run)];返回值:data|Selon`
 
 ```js
 var data=[{name:"name1",pw:"p1",age:21},
@@ -215,7 +215,7 @@ selon(data).update({
 
 以字符串形式添加属性。不能添加已有的属性否则会报错
 
-`参数:String(属性),String(值),[Boolean(run)];返回值:data|BQL`
+`参数:String(属性),String(值),[Boolean(run)];返回值:data|Selon`
 
 ```js
 var data=[{name:"name1"},
@@ -232,7 +232,7 @@ Add Validation
 
 以JSON格式添加属性。不能添加已有的属性否则会报错
 
-`参数:JSON,[Boolean(run)];返回值:data|BQL`
+`参数:JSON,[Boolean(run)];返回值:data|Selon`
 
 ```js
 var data=[{name:"name1"},
@@ -252,7 +252,7 @@ users.add({
 
 移除元素的属性。
 
-`参数:String(属性),[Boolean(run)];返回值:data|BQL`
+`参数:String(属性),[Boolean(run)];返回值:data|Selon`
 
 ```js
 var data=[{name:"name1",pw:"p1",age:21,sex:"男"},
@@ -269,7 +269,7 @@ users.remove("age,sex",true);
 
 以字符串形式插入元素。该方法只对数据为数组的 selon 对象有效
 
-`参数:String(属性),String(值),[Boolean(run)];返回值:data|BQL`
+`参数:String(属性),String(值),[Boolean(run)];返回值:data|Selon`
 
 ```js
 var data=[{name:"name1",pw:"p1"},
@@ -286,7 +286,7 @@ users.insert("name,pw","name common,new pw1;new pw2",true);
 
 插入JSON或JSON数组。该方法只对数据为数组的 selon 对象有效
 
-`参数:JSON|JSON Array,[Boolean(run)];返回值:data|BQL`
+`参数:JSON|JSON Array,[Boolean(run)];返回值:data|Selon`
 
 ```js
 var data=[{name:"name1",pw:"p1"},
@@ -312,7 +312,7 @@ users.insert([{
 
 在指定位置处插入元素。该方法只对数据为数组的 selon 对象有效
 
-`参数:(JSON|JSON Array)|(String,String),[int],[Boolean(run)];返回值:data|BQL`
+`参数:(JSON|JSON Array)|(String,String),[int],[Boolean(run)];返回值:data|Selon`
 
 ```js
 var data=[{name:"name1",pw:"p1"},
@@ -332,7 +332,7 @@ users.insert({
 
 删除元素。如要删除满足特定要求元素，请与where方法同时使用。该方法只对数据为数组的 selon 对象有效
 
-`参数:[Boolean(run)];返回值:data|BQL`
+`参数:[Boolean(run)];返回值:data|Selon`
 
 ```js
 var data=[{name:"name1",pw:"p1"},
@@ -349,7 +349,7 @@ users.delete(true);
 
 指定位置删除。如要删除满足特定要求元素，请与where方法同时使用。该方法只对数据为数组的 selon 对象有效
 
-`参数:[int],[Boolean(run)];返回值:data|BQL`
+`参数:[int],[Boolean(run)];返回值:data|Selon`
 
 ```js
 var data=[{name:"name1",pw:"p1"},
@@ -365,7 +365,7 @@ users.delete(0,true);//删除第一个元素
 
 以String形式对其他语句(含select、update、add、remove、delete、groupBy、orderBy)做一个条件删选，不满足条件的元素不会执行其他语句。对于多个条件，他们之间只满足and关系。若要使要其他，请参考.where(exp)。该方法只对数据为数组的 selon 对象有效
 
-`参数:String(属性),String(值),[Boolean(run)];返回值:data|BQL`
+`参数:String(属性),String(值),[Boolean(run)];返回值:data|Selon`
 
 ```js
 var data=[{name:"same name",pw:"p1"},
@@ -383,7 +383,7 @@ var result=users.select("*").where("name,pw","same name,p1",true);//多个条件
 
 以JSON对其他语句做一个条件删选。效果与上一节类似。对于多个条件，他们之间只满足and关系。若要使要其他，请参考.where(exp)。
 
-`参数:JSON,[Boolean(run)];返回值:data|BQL`
+`参数:JSON,[Boolean(run)];返回值:data|Selon`
 
 ```js
 var data=[{name:"same name",pw:"p1"},
@@ -403,7 +403,7 @@ var result=users.select("*").where({
 
 以js布尔表达式形式对其他语句做一个条件删选。效果与上一节类似。对于多个条件，您可以自定义他们之间的与或非关系，遵循js语法。
 
-`参数:String(布尔表达式),[Boolean(run)];返回值:data|BQL`
+`参数:String(布尔表达式),[Boolean(run)];返回值:data|Selon`
 
 ```js
 var data=[{name:"same name",pw:"p1",age:11,marry:true},
@@ -427,7 +427,7 @@ var result=users.select("name,age").where("$i>0&&name=='same name'",true);
 
 对数据进行分组，参数只能是单个属性，可以单独使用，返回一个二维数组。但通常与聚合函数一起使用，详情请参考下一节。可以与where语句同时使用。
 
-`参数:String(单个属性),[Boolean(run)];返回值:data|BQL`
+`参数:String(单个属性),[Boolean(run)];返回值:data|Selon`
 
 ```js
 var data=[{name:"n1",age:10},
@@ -448,7 +448,7 @@ var result=users.groupBy("age").where("name!='n2'",true);
 
 对数据进行分组并对分组使用聚合函数。聚合函数包含count,count(distinct ),sum,avg,min,max,first,last。
 
-`参数:String(属性),[Boolean(run)];返回值:data|BQL`
+`参数:String(属性),[Boolean(run)];返回值:data|Selon`
 
 ```js
 var data=[{name:"n1",age:10,sex:"男"},
@@ -469,7 +469,7 @@ var result=users.select("count(age),sex").groupBy("sex",true);
 
 根据某属性对BQL数据进行排序，返回排序结果，默认是升序。排序不会影响原数据。
 
-`参数:String(单个属性),[Boolean(run)];返回值:data|BQL`
+`参数:String(单个属性),[Boolean(run)];返回值:data|Selon`
 
 ```js
 var data=[{name:"n1",age:14,sex:"男"},
@@ -489,7 +489,7 @@ var result=users.select("name").groupBy("sex").orderBy("age",true);
 
 根据某属性对BQL数据进行排序，返回排序结果。您可以选择升序或是排序。次序类型不区分大小写。
 
-`参数:String(单个属性),[String(desc|asc)],[Boolean(run)];返回值:data|BQL`
+`参数:String(单个属性),[String(desc|asc)],[Boolean(run)];返回值:data|Selon`
 
 ```js
 var data=[{name:"n1",age:14},
@@ -507,7 +507,7 @@ var result=users.orderBy("age","desc",true);
 
 根据某属性对BQL数据进行排序，返回排序结果。您可以选择属性值的类型。值类型区分大小写，有以下几种类型(data,length,headLetter,Number),其中Number是缺省值。
 
-`参数:String(单个属性),[String(desc|asc)],[String],[Boolean(run)];返回值:data|BQL`
+`参数:String(单个属性),[String(desc|asc)],[String],[Boolean(run)];返回值:data|Selon`
 
 ```js
 var data=[{name:"aaa",height:170,birth:"1994-03-01"},
